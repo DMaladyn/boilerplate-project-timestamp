@@ -40,7 +40,6 @@ app.get("/api/:date_string", function (req, res) {
   }
 
   //if date is valid, pass it forward in proper format
-  console.log(typeof req.params.date_string);
   res.json({ unix: date.getTime(), utc: date.toUTCString() });
 });
 
