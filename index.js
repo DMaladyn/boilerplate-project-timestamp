@@ -27,16 +27,19 @@ app.get("/api", function (req, res) {
 app.get("/api/:date_string", function (req, res) {
   let date;
 
+  //if date_string contains only numbers then pass them as number, otherwise pass them as string
   if (/^[0-9]+$/.test(req.params.date_string)) {
     date = new Date(Number(req.params.date_string));
   } else {
     date = new Date(req.params.date_string);
   }
 
+  //if date is invalid return error: Invalid Date
   if (date.toString() === "Invalid Date") {
     return res.json({ error: "Invalid Date" });
   }
 
+  //if date is valid, pass it forward in proper format
   console.log(typeof req.params.date_string);
   res.json({ unix: date.getTime(), utc: date.toUTCString() });
 });
