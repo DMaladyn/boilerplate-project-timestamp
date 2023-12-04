@@ -18,28 +18,26 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + "/views/index.html");
 });
 
+app.get("/api", function (req, res) {
+  let date = new Date();
+  res.json({ unix: date.getTime(), utc: date.toUTCString() });
+});
+
 // your first API endpoint...
-app.get("/api/:date", function (req, res) {
+app.get("/api/:date_string", function (req, res) {
   let date;
-  if (/^[0-9]+$/.test(req.params.date)) {
-    date = new Date(req.params.date * 1000);
 
-    if (date.toString() === "Invalid Date") {
-      res.json({ error: "Invalid Date" });
-      return console.log("error");
-    }
-  } else if (/^[0-9\-]+$/.test(req.params.date)) {
-    date = new Date(req.params.date);
-
-    if (date.toString() === "Invalid Date") {
-      res.json({ error: "Invalid Date" });
-      return console.log("error");
-    }
+  if (/^[0-9]+$/.test(req.params.date_string)) {
+    date = new Date(Number(req.params.date_string));
   } else {
-    res.json({ error: "Invalid Date" });
-    return console.log("error");
+    date = new Date(req.params.date_string);
   }
-  console.log(typeof req.params.date);
+
+  if (date.toString() === "Invalid Date") {
+    return res.json({ error: "Invalid Date" });
+  }
+
+  console.log(typeof req.params.date_string);
   res.json({ unix: date.getTime(), utc: date.toUTCString() });
 });
 
